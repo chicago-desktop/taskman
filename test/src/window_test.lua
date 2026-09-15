@@ -14,17 +14,17 @@ local images = require("images")
 
 local function define_tests()
     test.describe("Task Manager window entry", function()
-        test.it("is Task Manager in Settings with the taskmgr picture, for administrators only", function()
+        test.it("is Task Manager in Settings with its own taskmgr picture, for administrators only", function()
             local entry, err = registry.get("windows.taskman:window")
             test.is_nil(err, tostring(err))
             local record: any = entry
             local meta: any = record and type(record.meta) == "table" and record.meta or {}
             test.eq(table.concat({tostring(meta.type), tostring(meta.title), tostring(meta.group), tostring(meta.image),
                 tostring(meta.pixel_render), tostring(meta.pixel_state)}, "|"),
-                "tui_desktop.window|Task Manager|Settings|taskmgr|windows.shell.sdk:render|windows.taskman:window")
+                "tui_desktop.window|Task Manager|Settings|windows.taskman:images/taskmgr|windows.shell.sdk:render|windows.taskman:window")
             test.eq(meta.requires, "windows.admin", "Task Manager must name windows.admin in meta.requires")
             for _, size in ipairs({32, 16}) do
-                local picture, why = images.get("taskmgr", size)
+                local picture, why = images.get("windows.taskman:images/taskmgr", size)
                 test.not_nil(picture, "taskmgr@" .. tostring(size) .. ": " .. tostring(why))
             end
         end)

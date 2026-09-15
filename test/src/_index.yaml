@@ -21,7 +21,7 @@ entries:
     kind: function.lua
     meta:
       type: test
-      comment: "Task Manager's entry — the Start menu fields, the taskmgr picture, requires windows.admin, and the window's own policy (it ends processes)."
+      comment: "Task Manager's entry — the Start menu fields, the module's own taskmgr picture, requires windows.admin, and the window's own policy (it ends processes)."
       group: Task Manager
       suite: windows_taskman
     source: file://window_test.lua

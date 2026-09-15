@@ -24,6 +24,7 @@ exclude:
   - ".wippy/**"
   - ".wippy:**"
 # `wippy publish` packs the entries of src/ and embeds only the fs.directory
-# entries listed under `embed:`. Task Manager declares none — its picture is
-# the shell's taskmgr — so there is no `embed:` list; add one with the first
-# pack.
+# entries listed under `embed:`. The image pack lives outside src/ and is
+# packed only when named here (fs.directory -> fs.embed).
+embed:
+  - windows.taskman:images

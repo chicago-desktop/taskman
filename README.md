@@ -39,7 +39,11 @@ terminal.ssh host anyone with an account logs on; without the field Task
 Manager would open for everyone.
 
 The module asks nothing of the application: the Start menu finds the window
-from its registry entry, and its picture is the shell's `taskmgr`.
+from its registry entry. Its picture is the module's own,
+`windows.taskman:images/taskmgr` — an image pack of the shell under
+`assets/images` (32 and 16 px) copied from the shell's icon set, Microsoft's
+artwork from `shell32.dll` (see `assets/images/SOURCE.md`); the pictures of
+the windows on the Applications tab come with the compositor's list.
 
 ## Inside
 

@@ -1,6 +1,6 @@
 organization: chicago
 module: taskman
-description: Task Manager for the Windows 95 shell — open windows, runtime processes, memory and goroutines over time and the node; ends a window or a process on confirmation, for administrators.
+description: Task Manager for the Chicago desktop — open windows, runtime processes, memory and goroutines over time and the node; ends a window or a process on confirmation, for administrators.
 license: MIT
 repository: https://github.com/chicago-desktop/taskman
 homepage: https://wippy.ai

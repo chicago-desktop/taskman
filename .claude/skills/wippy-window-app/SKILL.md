@@ -1,12 +1,12 @@
 ---
 name: wippy-window-app
-description: Add or repair a window application in the Wippy Windows shell. Use for registry registration, declarative window UI, client resize, scrolling, mouse input, lifecycle, and cell/pixel renderer integration in chicago/shell and chicago/tui-desktop. Keeps agents on the same SDK contract.
+description: Add or repair a window application in the Chicago shell. Use for registry registration, declarative window UI, client resize, scrolling, mouse input, lifecycle, and cell/pixel renderer integration in chicago/shell and chicago/tui-desktop. Keeps agents on the same SDK contract.
 ---
 
 > A copy of the skill of `chicago/shell` as of **chicago/shell 0.1.0** (git `e0b7d09` of
 > [chicago-desktop/shell](https://github.com/chicago-desktop/shell)); the shell's copy,
 > `skills/wippy-window-app/SKILL.md` in that repository, is canonical. In a module made from
-> the Windows module template the SDK guide it names is `docs/sdk.md` at the repository root
+> the Chicago module template the SDK guide it names is `docs/sdk.md` at the repository root
 > (the copy next to this one), and the scaffold the generator writes is already there as
 > `src/view.lua` + `src/window.lua`; the generator script, the audit and the shell's other
 > documents live in the shell's repository.

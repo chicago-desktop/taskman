@@ -1,6 +1,6 @@
 # chicago/taskman — Task Manager
 
-Task Manager for the Windows 95 shell of the terminal desktop
+Task Manager for the Chicago desktop in the terminal
 ([chicago/shell](https://github.com/chicago-desktop/shell)): Start →
 Settings → **Task Manager**. It shows the runtime itself — the open windows,
 the Wippy processes, memory and goroutines over time, the node and the
@@ -41,8 +41,7 @@ Manager would open for everyone.
 The module asks nothing of the application: the Start menu finds the window
 from its registry entry. Its picture is the module's own,
 `chicago.taskman:images/taskmgr` — an image pack of the shell under
-`assets/images` (32 and 16 px) copied from the shell's icon set, Microsoft's
-artwork from `shell32.dll` (see `assets/images/SOURCE.md`); the pictures of
+`assets/images` (32 and 16 px) copied from the shell's icon set, an interim icon set (see `assets/images/SOURCE.md`); the pictures of
 the windows on the Applications tab come with the compositor's list.
 
 ## Inside
@@ -60,11 +59,11 @@ More in [docs/taskman.md](docs/taskman.md).
 ## Developing
 
 ```bash
-make setup     # resolve the dependencies from the Hub (once, and after changing them)
+make setup     # resolve the dependencies (once, and after changing them)
 make check     # the repository's invariants
 make lint      # late locals, then wippy lint of this namespace and the harness
 make test      # the harness in test/, with test/shots/taskman-<tab>.png
-make publish   # to the Hub, after `wippy auth login`
+make publish   # publish a release, after `wippy auth login`
 ```
 
 The suites: `window_test` (the entry, the picture, the policy),
@@ -85,8 +84,8 @@ shell's guide, and the skill for agents in
 [skills/wippy-window-app/SKILL.md](skills/wippy-window-app/SKILL.md); the
 rules of this repository are in [AGENTS.md](AGENTS.md).
 
-Made from [the Windows module template](https://github.com/chicago-desktop/module-template) for
-modules of the Windows 95 shell. Repository:
+Made from [the Chicago module template](https://github.com/chicago-desktop/module-template) for
+modules of the Chicago shell. Repository:
 https://github.com/chicago-desktop/taskman.
 
 ## Licence

@@ -76,7 +76,7 @@ export function moduleReadme(identity) {
   const { organization, module: moduleName, namespace, title, githubOwner } = identity
   return `# ${organization}/${moduleName} — ${title}
 
-A module of the Windows 95 shell for the terminal desktop
+A module of the Chicago shell for the terminal desktop
 ([chicago/shell](https://github.com/chicago-desktop/shell)): it adds
 **${title}** to the Start menu under Programs. Describe here what the
 window does and how it is used.
@@ -116,8 +116,8 @@ shell's guide, and the skill for agents in
 [skills/wippy-window-app/SKILL.md](skills/wippy-window-app/SKILL.md); the
 rules of this repository are in [AGENTS.md](AGENTS.md).
 
-Made from [the Windows module template](${TEMPLATE_REPOSITORY}) for
-modules of the Windows 95 shell. Repository:
+Made from [the Chicago module template](${TEMPLATE_REPOSITORY}) for
+modules of the Chicago shell. Repository:
 https://github.com/${githubOwner}/${moduleName}.
 
 ## Licence

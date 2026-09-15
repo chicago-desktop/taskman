@@ -18,7 +18,7 @@ entries:
     kind: ns.definition
     meta:
       title: Task Manager
-      description: Task Manager for the Windows 95 shell — open windows, runtime processes, memory and goroutines over time and the node, for administrators.
+      description: Task Manager for the Chicago desktop — open windows, runtime processes, memory and goroutines over time and the node, for administrators.
 
   # ─── Dependencies ────────────────────────────────────────────────────
   # A compatibility range, never an exact version: the lock holds the exact
@@ -27,7 +27,7 @@ entries:
     name: dep.chicago.shell
     kind: ns.dependency
     meta:
-      comment: The Windows 95 shell — the window SDK and its charts, the runtime facts library the window reads, and the resolver of the module's image pack.
+      comment: The Chicago shell — the window SDK and its charts, the runtime facts library the window reads, and the resolver of the module's image pack.
     component: chicago/shell
 
   - version: "*"

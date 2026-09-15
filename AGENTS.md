@@ -1,7 +1,7 @@
 # Operating contract for this module
 
-A module of the Windows 95 shell for the terminal desktop (`chicago/shell` on
-`chicago/tui-desktop`), made from the Windows module template. Read this file
+A module of the Chicago shell for the terminal desktop (`chicago/shell` on
+`chicago/tui-desktop`), made from the Chicago module template. Read this file
 in full before changing the repository.
 
 ## Rules
@@ -29,7 +29,7 @@ in full before changing the repository.
 ## Commands
 
 ```bash
-make setup          # resolve dependencies from the Hub (both wippy.lock files)
+make setup          # resolve dependencies (both wippy.lock files)
 make check          # identity, dependency ranges, embed list, test form, no Cyrillic
 make lint           # tools/late-locals.py, then wippy lint of this namespace and the harness
 make test           # the harness's suites; writes test/shots/*.png

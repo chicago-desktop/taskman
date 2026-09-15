@@ -10,6 +10,9 @@ namespace: chicago.taskman
 # does not compute it, and the window is not allowed to read `/proc`. The
 # honest load of the runtime is goroutines and the heap.
 #
+# Two desktop widgets, Memory and Goroutines, show the same two figures at a
+# glance and open the window on a click (the last section of this file).
+#
 # Keep the comments of this file free of an unquoted colon followed by a
 # space inside a meta.comment — it breaks the parse of the whole index.
 
@@ -18,7 +21,7 @@ entries:
     kind: ns.definition
     meta:
       title: Task Manager
-      description: Task Manager for the Chicago desktop — open windows, runtime processes, memory and goroutines over time and the node, for administrators.
+      description: Task Manager for the Chicago desktop — open windows, runtime processes, memory and goroutines over time and the node, for administrators; the Memory and Goroutines desktop widgets open it on a click.
 
   # ─── Dependencies ────────────────────────────────────────────────────
   # The shell and the base are resolved from their GitHub repositories by
@@ -121,3 +124,86 @@ entries:
       charts: chicago.shell.sdk:charts
       facts: chicago.shell.config:system
       ui: chicago.shell.sdk:ui
+
+  # ─── The desktop widgets ─────────────────────────────────────────────
+  # Two widgets on the shell's desktop (FR-006, the shell's docs/sdk.md,
+  # "Desktop widgets") — the heap and the goroutines, a sample every 2 s,
+  # two minutes of history. They read the runtime the same way the window
+  # does (`chicago.shell.config:system`) and open it on a click. They have no
+  # network, no database and no files.
+  #
+  # The shell reads the widget entries at start and on `desktop.refresh`, so
+  # a new entry appears on the desktop after the shell restarts.
+
+  # chicago.taskman:sample
+  - name: sample
+    kind: library.lua
+    meta:
+      comment: "A ring of 60 samples, a round ceiling, one sample of a runtime figure and the trees of both widgets; a refusal is a label, not a zero."
+    source: file://sample.lua
+    imports:
+      facts: chicago.shell.config:system
+      charts: chicago.shell.sdk:charts
+      gadget: chicago.shell.sdk:gadget
+
+  # chicago.taskman:widget_scope
+  #
+  # `system.read` for the runtime's figures; the rest is the conversation
+  # with the compositor — find it by the name from the process context and
+  # publish the tree. Nothing more, a widget starts nothing and stops no one.
+  # It is far narrower than window_scope, and so the widgets name no
+  # `requires` and stand on every desktop; the click opens the window only
+  # for a person the window's own `requires` admits.
+  - name: widget_scope
+    kind: security.policy
+    meta:
+      comment: "The desktop widgets — read the runtime's figures and publish a tree to the compositor; start nothing."
+    policy:
+      actions:
+        - system.read
+        - process.context
+        - process.registry
+        - process.send
+      resources: "*"
+      effect: allow
+
+  # chicago.taskman:memory
+  #
+  # The `system` module is deliberately not declared here — the `facts`
+  # library declares it, and the `system.read` right is this entry's policy.
+  - name: memory
+    kind: process.lua
+    meta:
+      type: chicago.widget
+      title: Memory
+      width: 20
+      height: 8
+      order: 20
+      opens: chicago.taskman:window
+      comment: "Widget — the runtime's heap now and over two minutes; a click opens Task Manager."
+    source: file://memory.lua
+    method: main
+    imports:
+      app: chicago.shell.sdk:app
+      sample: chicago.taskman:sample
+    security:
+      policies: [chicago.taskman:widget_scope]
+
+  # chicago.taskman:goroutines
+  - name: goroutines
+    kind: process.lua
+    meta:
+      type: chicago.widget
+      title: Goroutines
+      width: 20
+      height: 9
+      order: 30
+      opens: chicago.taskman:window
+      comment: "Widget — the runtime's goroutine count now and over two minutes; a click opens Task Manager."
+    source: file://goroutines.lua
+    method: main
+    imports:
+      app: chicago.shell.sdk:app
+      sample: chicago.taskman:sample
+    security:
+      policies: [chicago.taskman:widget_scope]

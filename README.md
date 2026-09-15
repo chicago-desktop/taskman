@@ -4,7 +4,9 @@ Task Manager for the Chicago desktop in the terminal
 ([chicago/shell](https://github.com/chicago-desktop/shell)): Start →
 Settings → **Task Manager**. It shows the runtime itself — the open windows,
 the Wippy processes, memory and goroutines over time, the node and the
-cluster — refreshed once a second. For administrators only.
+cluster — refreshed once a second. For administrators only. Two desktop
+widgets, **Memory** and **Goroutines**, show the runtime's load at a glance
+and open Task Manager on a click.
 
 Four tabs:
 
@@ -24,6 +26,33 @@ Four tabs:
 
 "Refresh", F5 and R take a new sample at once. A permission refused to the
 window is named on screen, never shown as zero.
+
+## Desktop widgets
+
+Two widgets stand in the column at the right edge of the desktop (the shell's
+desktop widgets, under every window):
+
+- **Memory** (`chicago.taskman:memory`, 20×8) — the heap in use now, in
+  whole megabytes, as a gauge against a round ceiling, and its history over
+  the last two minutes as a graph on the same scale.
+- **Goroutines** (`chicago.taskman:goroutines`, 20×9) — the runtime's
+  goroutine count now and its history over the last two minutes.
+
+Each takes a sample every 2 s from the same figures Task Manager reads
+(`heap_in_use` and the goroutine count, through
+`chicago.shell.config:system`), so "memory" means the same in the widget and
+in the window it opens. A permission refused to a widget is its text, with
+the reason, never a zero.
+
+A click on either widget opens Task Manager, or raises it when it is already
+open. The widgets are on every desktop — their own policy
+`chicago.taskman:widget_scope` only reads the runtime's figures and publishes
+a tree to the compositor, and starts or stops nothing — but the window they
+open keeps its `requires: chicago.admin`, and the compositor opens it only
+for a person that scope admits.
+
+The shell reads the widget entries when the desktop starts: after the module
+is installed or updated, a new widget appears once the shell restarts.
 
 ## Rights and who may open it
 
@@ -53,6 +82,12 @@ the windows on the Applications tab come with the compositor's list.
 - `chicago.taskman:model` — the history, the formats and the stable sorting
   of processes, pure; the graph and the scale ceiling come from
   `chicago.shell.sdk:charts`.
+- `chicago.taskman:memory` and `chicago.taskman:goroutines` — the two
+  widgets (`meta.type: chicago.widget`), thin SDK applications with a 2 s
+  `interval`, under `chicago.taskman:widget_scope`.
+- `chicago.taskman:sample` — what the widgets share, pure: the ring of 60
+  samples, one sample of a runtime figure (a refusal becomes the text) and
+  both widgets' trees from the shell's kit, `chicago.shell.sdk:gadget`.
 
 More in [docs/taskman.md](docs/taskman.md).
 
@@ -69,9 +104,11 @@ make publish   # publish a release, after `wippy auth login`
 The suites: `window_test` (the entry, the picture, the policy),
 `taskman_test` (the model, the layout at three sizes on four tabs, the
 selection kept by id, End Task and End Process, and the live window inside a
-real pixel compositor — `taskman_composer` in the harness) and
+real pixel compositor — `taskman_composer` in the harness),
 `taskman_shots_test` (the four tabs on sample data through the shell's
-renderer).
+renderer) and `sample_test` (the widgets: the ring of 60 samples, the heap in
+whole megabytes, a refusal as a label rather than a zero, both trees inside
+the panel body without overlaps, in cells and at two pixel cell sizes).
 
 **A build of the runtime fork from its releases is required**
 ([chicago-desktop/runtime](https://github.com/chicago-desktop/runtime),

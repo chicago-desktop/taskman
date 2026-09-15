@@ -70,6 +70,21 @@ entries:
       rasters: chicago.shell.theme:rasters
       taskman_window: chicago.taskman:window
 
+  - name: sample_test
+    kind: function.lua
+    meta:
+      type: test
+      comment: "The desktop widgets — the ring keeps 60 samples, the heap in whole megabytes from heap_in_use, a refusal is a label with the reason rather than a zero, the trees lay out inside the panel body without overlaps."
+      group: Task Manager
+      suite: chicago_taskman
+    source: file://sample_test.lua
+    method: run
+    imports:
+      test: wippy.test:test
+      sample: chicago.taskman:sample
+      ui: chicago.shell.sdk:ui
+      gadget: chicago.shell.sdk:gadget
+
   # The live case's compositor: the base's library with the shell's pixel
   # theme, reporting the Task Manager's frames to the test.
   - name: taskman_composer

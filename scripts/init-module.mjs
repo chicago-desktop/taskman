@@ -8,7 +8,7 @@ const defaultRoot = resolve(dirname(scriptPath), '..')
 // The template's own repository. A module made from the template keeps this
 // URL in its README as provenance; check-module.mjs does not count that one
 // occurrence as a leftover.
-export const TEMPLATE_REPOSITORY = 'https://github.com/wippy-windows/module-template'
+export const TEMPLATE_REPOSITORY = 'https://github.com/chicago-desktop/module-template'
 
 function usage() {
   return `Usage:
@@ -17,8 +17,8 @@ function usage() {
     [--namespace <root.namespace>] [--tag <org-module-slug>] \\
     [--github-owner <owner>]
 
-Renames the template's identity (windows/module-template, the namespace
-windows.module_template, the title "Module Template") to the module's in
+Renames the template's identity (chicago/module-template, the namespace
+chicago.module_template, the title "Module Template") to the module's in
 every source, test and configuration file, and writes a README for the
 module. The initializer is idempotent for the same identity and refuses to
 rewrite an already-initialized checkout to a different identity.`
@@ -61,11 +61,11 @@ function sameIdentity(left, right) {
 export function templateTokenMap(identity) {
   const sqlPrefix = identity.namespace.replace(/\./g, '_')
   return new Map([
-    ['windows/module-template', `${identity.organization}/${identity.module}`],
-    ['windows.module_template', identity.namespace],
-    ['windows-module-template', identity.tag],
-    ['windows_module_template', sqlPrefix],
-    ['WINDOWS_MODULE_TEMPLATE', sqlPrefix.toUpperCase()],
+    ['chicago/module-template', `${identity.organization}/${identity.module}`],
+    ['chicago.module_template', identity.namespace],
+    ['chicago-module-template', identity.tag],
+    ['chicago_module_template', sqlPrefix],
+    ['CHICAGO_MODULE_TEMPLATE', sqlPrefix.toUpperCase()],
     ['Module Template', identity.title],
   ])
 }
@@ -77,7 +77,7 @@ export function moduleReadme(identity) {
   return `# ${organization}/${moduleName} — ${title}
 
 A module of the Windows 95 shell for the terminal desktop
-([windows/shell](https://github.com/wippy-windows/windows)): it adds
+([chicago/shell](https://github.com/chicago-desktop/shell)): it adds
 **${title}** to the Start menu under Programs. Describe here what the
 window does and how it is used.
 
@@ -87,13 +87,13 @@ window does and how it is used.
   component tree of a model and what an action does to it; the tests
   exercise it without a compositor.
 - \`${namespace}:window\` — the process: runs \`view\` on the shell's SDK
-  (\`windows.shell.sdk:app\`).
+  (\`chicago.shell.sdk:app\`).
 - \`${namespace}:images\` — the module's pictures, an image pack of the
   shell (\`assets/images/{32,16}/<name>.png\`), named
   \`${namespace}:images/<name>\`.
 
-The module depends on \`windows/shell\` (the SDK, the image packs) and
-\`windows/tui-desktop\` (the compositor). It asks nothing of the application.
+The module depends on \`chicago/shell\` (the SDK, the image packs) and
+\`chicago/tui-desktop\` (the compositor). It asks nothing of the application.
 
 ## Developing
 
@@ -106,7 +106,7 @@ make publish   # to the Hub, after \`wippy auth login\`
 \`\`\`
 
 **A local build of the runtime fork is required**
-([wippy-windows/runtime](https://github.com/wippy-windows/runtime), branch
+([chicago-desktop/runtime](https://github.com/chicago-desktop/runtime), branch
 \`wippy-projects\`): the shell declares the \`gfx\` module, which the release
 runtime does not have, and \`wippy\` from PATH does not load the shell at all.
 The Makefile's \`WIPPY\` names the build; override it with \`make test WIPPY=…\`.
@@ -146,9 +146,9 @@ export async function initialize(argv, root = defaultRoot) {
 
   const namespace = args.namespace ?? `${namespacePart(organization)}.${namespacePart(moduleName)}`
   const tag = args.tag ?? `${organization}-${moduleName}`
-  // The Hub organization `windows` lives on GitHub as `wippy-windows`; any
+  // The Hub organization `chicago` lives on GitHub as `chicago-desktop`; any
   // other organization is assumed to use the same name in both places.
-  const githubOwner = args['github-owner'] ?? (organization === 'windows' ? 'wippy-windows' : organization)
+  const githubOwner = args['github-owner'] ?? (organization === 'chicago' ? 'chicago-desktop' : organization)
   if (!/^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+$/.test(namespace)) throw new Error('--namespace must contain at least two lowercase dot-separated segments')
   if (!/^[a-z][a-z0-9.-]*-[a-z0-9.-]+$/.test(tag)) throw new Error('--tag must be a lowercase slug containing a hyphen')
   if (!/^[A-Za-z0-9_.-]+$/.test(githubOwner)) throw new Error('--github-owner is not a valid GitHub owner')
@@ -170,17 +170,17 @@ export async function initialize(argv, root = defaultRoot) {
   const repository = `https://github.com/${githubOwner}/${moduleName}`
   const replacements = [
     [TEMPLATE_REPOSITORY, repository],
-    ['windows/module-template', `${organization}/${moduleName}`],
-    ['windows.module_template', namespace],
-    ['windows-module-template', tag],
-    ['WINDOWS_MODULE_TEMPLATE', envPrefix],
-    ['windows_module_template', sqlPrefix],
+    ['chicago/module-template', `${organization}/${moduleName}`],
+    ['chicago.module_template', namespace],
+    ['chicago-module-template', tag],
+    ['CHICAGO_MODULE_TEMPLATE', envPrefix],
+    ['chicago_module_template', sqlPrefix],
     ['module_template_harness', `${moduleSnake}_harness`],
     ['module-template-harness', `${moduleName}-harness`],
     ['Module Template Test Harness', `${title} Test Harness`],
     ['Programs/Module Template', `Programs/${title}`],
     ['Module Template', title],
-    ['organization: windows', `organization: ${organization}`],
+    ['organization: chicago', `organization: ${organization}`],
     ['module: module-template', `module: ${moduleName}`],
   ]
   // All replacements happen in one pass over the content, longest pattern
@@ -190,7 +190,7 @@ export async function initialize(argv, root = defaultRoot) {
   // alternatives run last as prose fallbacks: any "module-template" or
   // "module_template" the longer literals did not claim becomes the module
   // name, so no scaffold wording leaks into shipped metadata. The words
-  // "windows" (the shell's organization: windows/shell stays) and "template"
+  // "chicago" (the shell's organization: chicago/shell stays) and "template"
   // alone are never touched.
   const escapeLiteral = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   const byLength = replacements.map(([from]) => from).sort((a, b) => b.length - a.length)

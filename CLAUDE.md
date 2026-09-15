@@ -8,7 +8,7 @@ is the shell's, and its work sequence applies here.
 
 What to know before the first edit:
 
-- **Only a build of the runtime fork runs this module** (wippy-windows/runtime,
+- **Only a build of the runtime fork runs this module** (chicago-desktop/runtime,
   branch `wippy-projects`): the shell declares `gfx`, and a release `wippy`
   refuses to load it with `node with ID {gfx :gfx} not found`. The Makefile's
   `WIPPY` names the build; `make lint` with a release `wippy` verifies nothing.

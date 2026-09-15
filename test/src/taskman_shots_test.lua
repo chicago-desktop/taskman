@@ -40,7 +40,7 @@ local function sample(): any
     end
     for index = 1, 76 do
         state.snapshot.processes[index] = {pid = "local:process-" .. string.format("%04d", index),
-            source = index == 1 and "windows.shell:shell" or "app.workers:worker_" .. string.format("%02d", index),
+            source = index == 1 and "chicago.shell:shell" or "app.workers:worker_" .. string.format("%02d", index),
             state = index % 4 == 0 and "running" or "waiting", steps = index * 147, started = 1788850100}
     end
     return state

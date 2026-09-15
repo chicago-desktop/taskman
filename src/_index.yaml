@@ -1,5 +1,5 @@
 version: "1.0"
-namespace: windows.taskman
+namespace: chicago.taskman
 
 # Task Manager: a window on the shell SDK that shows the runtime itself: open
 # windows, processes, memory and goroutines over time, the node and the
@@ -24,44 +24,44 @@ entries:
   # A compatibility range, never an exact version: the lock holds the exact
   # one. `*` is any published version.
   - version: "*"
-    name: dep.windows.shell
+    name: dep.chicago.shell
     kind: ns.dependency
     meta:
       comment: The Windows 95 shell — the window SDK and its charts, the runtime facts library the window reads, and the resolver of the module's image pack.
-    component: windows/shell
+    component: chicago/shell
 
   - version: "*"
-    name: dep.windows.tui_desktop
+    name: dep.chicago.tui_desktop
     kind: ns.dependency
     meta:
       comment: The desktop base — the compositor that lists the open windows, closes one on End Task, and asks meta.requires before opening Task Manager.
-    component: windows/tui-desktop
+    component: chicago/tui-desktop
 
-  # windows.taskman:images
+  # chicago.taskman:images
   #
   # The shell finds an image pack in the registry by its meta.type and names a
-  # picture `<entry>/<file>`: `windows.taskman:images/taskmgr`. PNG in 32/
+  # picture `<entry>/<file>`: `chicago.taskman:images/taskmgr`. PNG in 32/
   # and 16/ under assets/images; packed only because wippy.yaml lists the
   # entry under `embed:`. The windows on the Applications tab bring their
   # own pictures with the compositor's list.
   - name: images
     kind: fs.directory
     meta:
-      type: windows.images
+      type: chicago.images
       comment: "Task Manager's pictures — the taskmgr icon at 32 and 16 px, an image pack of the shell."
     base: module
     directory: ./assets/images
     auto_init: false
 
-  # windows.taskman:model
+  # chicago.taskman:model
   - name: model
     kind: library.lua
     meta:
       comment: Task Manager, pure model — measurement history, formats, stable process sorting; the graph and the ceiling come from the SDK.
     source: file://model.lua
     imports:
-      geometry: windows.tui_desktop.desktop:geometry
-      charts: windows.shell.sdk:charts
+      geometry: chicago.tui_desktop.desktop:geometry
+      charts: chicago.shell.sdk:charts
 
   # Permissions: read the runtime (`system.read`: hosts, node, cluster), ask
   # the compositor about open windows, publish its state and close a window
@@ -82,16 +82,16 @@ entries:
       resources: "*"
       effect: allow
 
-  # windows.taskman:window
+  # chicago.taskman:window
   - name: window
     kind: process.lua
     meta:
       type: tui_desktop.window
       title: Task Manager
       # Ends any runtime process, other people's desktops' among them: only
-      # for windows.admin.
-      requires: windows.admin
-      image: windows.taskman:images/taskmgr
+      # for chicago.admin.
+      requires: chicago.admin
+      image: chicago.taskman:images/taskmgr
       icon: "▥"
       group: Settings
       order: 120
@@ -99,8 +99,8 @@ entries:
       resizable: true
       width: 78
       height: 27
-      pixel_render: windows.shell.sdk:render
-      pixel_state: windows.taskman:window
+      pixel_render: chicago.shell.sdk:render
+      pixel_state: chicago.taskman:window
       comment: Task Manager — open windows, runtime processes, memory and goroutines over time, the node; refreshes once a second; a window on the shell SDK.
     source: file://window.lua
     method: main
@@ -109,12 +109,12 @@ entries:
       - process
       - system
     security:
-      policies: [windows.taskman:window_scope]
+      policies: [chicago.taskman:window_scope]
     imports:
-      geometry: windows.tui_desktop.desktop:geometry
-      app: windows.shell.sdk:app
-      desktop: windows.tui_desktop.desktop:window_api
-      model: windows.taskman:model
-      charts: windows.shell.sdk:charts
-      facts: windows.shell.config:system
-      ui: windows.shell.sdk:ui
+      geometry: chicago.tui_desktop.desktop:geometry
+      app: chicago.shell.sdk:app
+      desktop: chicago.tui_desktop.desktop:window_api
+      model: chicago.taskman:model
+      charts: chicago.shell.sdk:charts
+      facts: chicago.shell.config:system
+      ui: chicago.shell.sdk:ui

@@ -9,16 +9,16 @@ permissions:
   contents: read
 
 concurrency:
-  group: verify-windows-taskman-${{ github.ref }}
+  group: verify-chicago-taskman-${{ github.ref }}
   cancel-in-progress: true
 
 env:
   # The shell declares the `gfx` module, which only the runtime fork has
-  # (wippy-windows/runtime, branch wippy-projects); the release CLI from
+  # (chicago-desktop/runtime, branch wippy-projects); the release CLI from
   # wippyai/runtime does not load the shell at all. So the runtime is built
   # from that branch here, and cached by its commit. Set an exact commit or
   # tag to bisect a runtime regression.
-  RUNTIME_REPOSITORY: wippy-windows/runtime
+  RUNTIME_REPOSITORY: chicago-desktop/runtime
   RUNTIME_REF: wippy-projects
 
 jobs:

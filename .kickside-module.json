@@ -2,11 +2,11 @@
   "templateVersion": 1,
   "initialized": true,
   "identity": {
-    "organization": "windows",
+    "organization": "chicago",
     "module": "taskman",
-    "namespace": "windows.taskman",
-    "tag": "windows-taskman",
+    "namespace": "chicago.taskman",
+    "tag": "chicago-taskman",
     "title": "Task Manager",
-    "githubOwner": "wippy-windows"
+    "githubOwner": "chicago-desktop"
   }
 }

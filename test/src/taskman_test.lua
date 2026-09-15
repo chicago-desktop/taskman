@@ -204,7 +204,7 @@ local function define_tests()
         test.it("opens the real native window, handles tabs and refresh, and keeps sampling", function()
             local replies = process.listen("desktop.reply", {message = true})
             local frames = process.listen("taskman.frame", {message = true})
-            local service = "windows.shell.test.taskman"
+            local service = "chicago.shell.test.taskman"
             local view = assert(tty.viewport({width = 110, height = 36}))
             local pid = assert(process.with_options({terminal = assert(view:grant())})
                 :spawn_monitored("app:taskman_composer", "app:processes", service, tostring(process.pid())))
@@ -213,7 +213,7 @@ local function define_tests()
                 channel.select({time.after("20ms"):case_receive()})
             end
             test.not_nil(process.registry.lookup(service))
-            assert(process.send(service, "desktop.open", {entry = "windows.taskman:window", reply_to = tostring(process.pid())}))
+            assert(process.send(service, "desktop.open", {entry = "chicago.taskman:window", reply_to = tostring(process.pid())}))
             local opened = receive(replies, function(value) return value.command == "desktop.open" end)
             test.is_true(opened.ok)
             test.eq(opened.window.content, "pixels")

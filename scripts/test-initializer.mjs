@@ -7,7 +7,7 @@ import { initialize } from './init-module.mjs'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
 // The initializer can only be exercised from the pristine template: an
-// initialized checkout no longer contains the windows/module-template
+// initialized checkout no longer contains the chicago/module-template
 // placeholders the test rewrites. Module checkouts skip this suite; the
 // template repository's CI still runs it on every change.
 const rootConfig = JSON.parse(await readFile(resolve(root, '.kickside-module.json'), 'utf8'))
@@ -46,13 +46,13 @@ if (!index.includes('group: Programs/Orbit Tasks') || !index.includes('image: or
 if (!harness.includes('module: tasks-harness') || !harnessConfig.includes('orbit/tasks: ..')) throw new Error('initializer did not update the harness')
 if (!harnessIndex.includes('tasks_harness.dep.module') || !harnessIndex.includes('suite: orbit_work_tasks')) throw new Error('initializer did not update the harness index')
 if (!makefile.includes('NS   := orbit.work.tasks')) throw new Error('initializer did not update the Makefile namespace')
-if (!readme.includes('# orbit/tasks — Orbit Tasks') || !readme.includes('wippy-windows/module-template')) throw new Error('initializer did not write the module README with its provenance')
-for (const token of ['windows/module-template', 'windows.module_template', 'windows-module-template', 'windows_module_template', 'Module Template']) {
+if (!readme.includes('# orbit/tasks — Orbit Tasks') || !readme.includes('chicago-desktop/module-template')) throw new Error('initializer did not write the module README with its provenance')
+for (const token of ['chicago/module-template', 'chicago.module_template', 'chicago-module-template', 'chicago_module_template', 'Module Template']) {
   for (const [name, content] of [['wippy.yaml', manifest], ['src/_index.yaml', index], ['test/src/_index.yaml', harnessIndex], ['Makefile', makefile]]) {
     if (content.includes(token)) throw new Error(`initializer retained ${token} in ${name}`)
   }
 }
-if (!manifest.includes('windows/shell') && !index.includes('windows/shell')) throw new Error('initializer must leave the dependency on windows/shell alone')
+if (!manifest.includes('chicago/shell') && !index.includes('chicago/shell')) throw new Error('initializer must leave the dependency on chicago/shell alone')
 const second = await initialize(args, target)
 if (!second.alreadyInitialized || second.changedFiles !== 0) throw new Error('initializer is not idempotent')
 await import(`${pathToFileURL(resolve(target, 'scripts/check-module.mjs')).href}?initialized-test=1`)

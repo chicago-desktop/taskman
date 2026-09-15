@@ -11,7 +11,7 @@ param(
     [ValidateSet('private', 'public')]
     [string]$Visibility = 'public',
     # The shell declares the `gfx` module, which only a local build of the
-    # runtime fork has (wippy-windows/runtime, branch wippy-projects); the
+    # runtime fork has (chicago-desktop/runtime, branch wippy-projects); the
     # release `wippy` does not load the shell. Name your build here or in
     # the WIPPY environment variable.
     [string]$Wippy = $(if ($env:WIPPY) { $env:WIPPY } else { 'wippy' }),

@@ -1,11 +1,11 @@
-# windows/taskman — initialize, check, lint, test and publish a module
-# of the Windows 95 shell (windows/shell).
+# chicago/taskman — initialize, check, lint, test and publish a module
+# of the Windows 95 shell (chicago/shell).
 
 # The module's root namespace; `make lint` checks it and the harness's.
-NS   := windows.taskman
+NS   := chicago.taskman
 TYPE := plugin
 # Publication visibility for `make publish` on a module the Hub does not have
-# yet. Everything under the `windows` organization is public; set
+# yet. Everything under the `chicago` organization is public; set
 # VIS=private for a module that must not be.
 VIS  := public
 
@@ -15,7 +15,7 @@ SHELL := bash
 .SHELLFLAGS := -o pipefail -ec
 
 # The shell this module runs in declares the `gfx` module, and only a local
-# build of the runtime fork has it (wippy-windows/runtime, branch
+# build of the runtime fork has it (chicago-desktop/runtime, branch
 # wippy-projects): the release `wippy` from PATH does not load the shell at
 # all and says only "node with ID … not found". Point WIPPY at your build:
 #

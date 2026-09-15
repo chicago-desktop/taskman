@@ -1,15 +1,15 @@
-organization: windows
+organization: chicago
 module: taskman
 description: Task Manager for the Windows 95 shell — open windows, runtime processes, memory and goroutines over time and the node; ends a window or a process on confirmation, for administrators.
 license: MIT
-repository: https://github.com/wippy-windows/taskman
+repository: https://github.com/chicago-desktop/taskman
 homepage: https://wippy.ai
 keywords:
   - kickside
   - tui
   - terminal
   - desktop
-  - windows
+  - chicago
 # No `version:` here — the publisher picks it (`wippy publish` bumps the
 # latest published one). A published version is immutable.
 exclude_meta:
@@ -27,4 +27,4 @@ exclude:
 # entries listed under `embed:`. The image pack lives outside src/ and is
 # packed only when named here (fs.directory -> fs.embed).
 embed:
-  - windows.taskman:images
+  - chicago.taskman:images

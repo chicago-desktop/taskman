@@ -12,7 +12,7 @@ Before publishing a module:
   tracked lock files, `.wippy/`, packs and logs);
 - keep Hub tokens, `.env`, `.wippy/`, databases and module packs outside Git;
 - give a window only the policy it needs — the shell's
-  `windows.shell.security:view_state` for a view window, plus a policy of
+  `chicago.shell.security:view_state` for a view window, plus a policy of
   the module's own for the resources it actually reads;
 - read files through a declared `fs` resource under that policy, never by a
   system path;

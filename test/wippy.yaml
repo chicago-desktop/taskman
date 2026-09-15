@@ -1,4 +1,4 @@
-organization: windows
+organization: chicago
 module: taskman-harness
-description: Standalone runnable harness that boots windows/taskman with the shell and runs its co-located *_test.lua suites.
+description: Standalone runnable harness that boots chicago/taskman with the shell and runs its co-located *_test.lua suites.
 version: "1.0"

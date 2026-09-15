@@ -1,7 +1,7 @@
 # Operating contract for this module
 
-A module of the Windows 95 shell for the terminal desktop (`windows/shell` on
-`windows/tui-desktop`), made from the Windows module template. Read this file
+A module of the Windows 95 shell for the terminal desktop (`chicago/shell` on
+`chicago/tui-desktop`), made from the Windows module template. Read this file
 in full before changing the repository.
 
 ## Rules
@@ -9,7 +9,7 @@ in full before changing the repository.
 - **English only**: code, comments, `meta.comment`, YAML comments, documents,
   test names, commit messages. `make check` refuses Cyrillic anywhere.
 - **The local runtime build only.** The shell declares the `gfx` module,
-  which only a build of the runtime fork has (wippy-windows/runtime, branch
+  which only a build of the runtime fork has (chicago-desktop/runtime, branch
   `wippy-projects`); a release `wippy` does not load the shell and says only
   `node with ID {gfx :gfx} not found`. `make lint` and `make test` use the
   build the Makefile's `WIPPY` names; a release `wippy lint` answers "clean"

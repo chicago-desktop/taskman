@@ -1,7 +1,7 @@
-# windows/taskman — Task Manager
+# chicago/taskman — Task Manager
 
 Task Manager for the Windows 95 shell of the terminal desktop
-([windows/shell](https://github.com/wippy-windows/windows)): Start →
+([chicago/shell](https://github.com/chicago-desktop/shell)): Start →
 Settings → **Task Manager**. It shows the runtime itself — the open windows,
 the Wippy processes, memory and goroutines over time, the node and the
 cluster — refreshed once a second. For administrators only.
@@ -28,32 +28,32 @@ window is named on screen, never shown as zero.
 ## Rights and who may open it
 
 The window reads the numbers itself, with the `system` module, under its own
-policy `windows.taskman:window_scope`: `system.read` for the runtime,
+policy `chicago.taskman:window_scope`: `system.read` for the runtime,
 `process.context` / `process.registry` / `process.send` to ask the compositor
 and close a window, and `process.terminate` for End Process. That wide
 policy is the point of the program — it ends any runtime process, other
 people's desktops' among them — and so the window names
-`requires: windows.admin`: the base's compositor asks the logged-on person's
+`requires: chicago.admin`: the base's compositor asks the logged-on person's
 scope before opening it (`app.security:admin` has it through `*`). Under a
 terminal.ssh host anyone with an account logs on; without the field Task
 Manager would open for everyone.
 
 The module asks nothing of the application: the Start menu finds the window
 from its registry entry. Its picture is the module's own,
-`windows.taskman:images/taskmgr` — an image pack of the shell under
+`chicago.taskman:images/taskmgr` — an image pack of the shell under
 `assets/images` (32 and 16 px) copied from the shell's icon set, Microsoft's
 artwork from `shell32.dll` (see `assets/images/SOURCE.md`); the pictures of
 the windows on the Applications tab come with the compositor's list.
 
 ## Inside
 
-- `windows.taskman:window` — the window, an application on the shell's SDK
-  (`windows.shell.sdk:app`): tabs, tables, framed groups, gauges, graphs, the
+- `chicago.taskman:window` — the window, an application on the shell's SDK
+  (`chicago.shell.sdk:app`): tabs, tables, framed groups, gauges, graphs, the
   status bar and the button are the SDK's components, the same in cells and
   in pixels.
-- `windows.taskman:model` — the history, the formats and the stable sorting
+- `chicago.taskman:model` — the history, the formats and the stable sorting
   of processes, pure; the graph and the scale ceiling come from
-  `windows.shell.sdk:charts`.
+  `chicago.shell.sdk:charts`.
 
 More in [docs/taskman.md](docs/taskman.md).
 
@@ -75,7 +75,7 @@ real pixel compositor — `taskman_composer` in the harness) and
 renderer).
 
 **A local build of the runtime fork is required**
-([wippy-windows/runtime](https://github.com/wippy-windows/runtime), branch
+([chicago-desktop/runtime](https://github.com/chicago-desktop/runtime), branch
 `wippy-projects`): the shell declares the `gfx` module, which the release
 runtime does not have, and `wippy` from PATH does not load the shell at all.
 The Makefile's `WIPPY` names the build; override it with `make test WIPPY=…`.
@@ -85,9 +85,9 @@ shell's guide, and the skill for agents in
 [skills/wippy-window-app/SKILL.md](skills/wippy-window-app/SKILL.md); the
 rules of this repository are in [AGENTS.md](AGENTS.md).
 
-Made from [the Windows module template](https://github.com/wippy-windows/module-template) for
+Made from [the Windows module template](https://github.com/chicago-desktop/module-template) for
 modules of the Windows 95 shell. Repository:
-https://github.com/wippy-windows/taskman.
+https://github.com/chicago-desktop/taskman.
 
 ## Licence
 

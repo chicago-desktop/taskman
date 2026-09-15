@@ -1,7 +1,7 @@
 version: "1.0"
 namespace: app
 
-# Standalone harness for windows/taskman. Provides the host resources the boot
+# Standalone harness for chicago/taskman. Provides the host resources the boot
 # needs (app:db, app:processes, a gateway and a router for the shell's
 # endpoints, env storage, a permissive actor scope, the fonts and the shots
 # folder), a live pixel compositor for the window's live case, and runs the
@@ -21,9 +21,9 @@ entries:
     kind: function.lua
     meta:
       type: test
-      comment: "Task Manager's entry — the Start menu fields, the module's own taskmgr picture, requires windows.admin, and the window's own policy (it ends processes)."
+      comment: "Task Manager's entry — the Start menu fields, the module's own taskmgr picture, requires chicago.admin, and the window's own policy (it ends processes)."
       group: Task Manager
-      suite: windows_taskman
+      suite: chicago_taskman
     source: file://window_test.lua
     method: run
     # Reading a picture takes `registry.get` as well as `fs.get`, and `gfx` to
@@ -31,7 +31,7 @@ entries:
     modules: [gfx, fs, registry]
     imports:
       test: wippy.test:test
-      images: windows.shell.theme:images
+      images: chicago.shell.theme:images
 
   - name: taskman_test
     kind: function.lua
@@ -39,16 +39,16 @@ entries:
       type: test
       comment: Task Manager — history no longer than the ceiling, a graph in block characters bottom-up and right-to-left, memory and time formats, tab layout and hits, End Task and End Process, and the live window in a real compositor.
       group: Task Manager
-      suite: windows_taskman
+      suite: chicago_taskman
     source: file://taskman_test.lua
     modules: [fs, gfx, channel, process, tty, time]
     imports:
       test: wippy.test:test
-      model: windows.taskman:model
-      ui: windows.shell.sdk:ui
-      taskman_window: windows.taskman:window
-      rasters: windows.shell.theme:rasters
-      desktop: windows.tui_desktop.desktop:window_api
+      model: chicago.taskman:model
+      ui: chicago.shell.sdk:ui
+      taskman_window: chicago.taskman:window
+      rasters: chicago.shell.theme:rasters
+      desktop: chicago.tui_desktop.desktop:window_api
     method: run
 
   - name: taskman_shots_test
@@ -57,7 +57,7 @@ entries:
       type: test
       comment: "Task Manager's four tabs on sample data through the shell's renderer — test/shots/taskman-applications.png, -processes, -performance and -node."
       group: Task Manager
-      suite: windows_taskman
+      suite: chicago_taskman
     source: file://taskman_shots_test.lua
     method: run
     # `gfx` and `fs` for the shots: the font arrives as bytes read from
@@ -65,10 +65,10 @@ entries:
     modules: [fs, gfx]
     imports:
       test: wippy.test:test
-      ui: windows.shell.sdk:ui
-      render: windows.shell.sdk:render
-      rasters: windows.shell.theme:rasters
-      taskman_window: windows.taskman:window
+      ui: chicago.shell.sdk:ui
+      render: chicago.shell.sdk:render
+      rasters: chicago.shell.theme:rasters
+      taskman_window: chicago.taskman:window
 
   # The live case's compositor: the base's library with the shell's pixel
   # theme, reporting the Task Manager's frames to the test.
@@ -80,8 +80,8 @@ entries:
     method: main
     modules: [process, fs, gfx]
     imports:
-      library: windows.tui_desktop.desktop:library
-      chrome: windows.shell.theme:chrome_pixels
+      library: chicago.tui_desktop.desktop:library
+      chrome: chicago.shell.theme:chrome_pixels
 
   # ─── Host resources ───────────────────────────────────────────────────
   - name: shots
@@ -148,7 +148,7 @@ entries:
     kind: ns.dependency
     meta:
       comment: The module under test; its source is replaced with ../ in .wippy.yaml.
-    component: "windows/taskman"
+    component: "chicago/taskman"
 
   - name: taskman_harness.dep.migration
     version: "*"

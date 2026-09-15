@@ -1,0 +1,180 @@
+version: "1.0"
+namespace: app
+
+# Standalone harness for windows/taskman. Provides the host resources the boot
+# needs (app:db, app:processes, a gateway and a router for the shell's
+# endpoints, env storage, a permissive actor scope, the fonts and the shots
+# folder), a live pixel compositor for the window's live case, and runs the
+# co-located *_test.lua suites. Excluded from publish by the module's
+# wippy.yaml.
+#
+# Every test entry is a function.lua with `meta.type: test`; `wippy test`
+# runs the ones it discovers. A test file must be in the run_cases form — the
+# other form is counted, printed green and never executed.
+
+entries:
+  - name: definition
+    kind: ns.definition
+    meta: {title: Task Manager Test Harness}
+
+  - name: window_test
+    kind: function.lua
+    meta:
+      type: test
+      comment: "Task Manager's entry — the Start menu fields, the taskmgr picture, requires windows.admin, and the window's own policy (it ends processes)."
+      group: Task Manager
+      suite: windows_taskman
+    source: file://window_test.lua
+    method: run
+    # Reading a picture takes `registry.get` as well as `fs.get`, and `gfx` to
+    # decode it.
+    modules: [gfx, fs, registry]
+    imports:
+      test: wippy.test:test
+      images: windows.shell.theme:images
+
+  - name: taskman_test
+    kind: function.lua
+    meta:
+      type: test
+      comment: Task Manager — history no longer than the ceiling, a graph in block characters bottom-up and right-to-left, memory and time formats, tab layout and hits, End Task and End Process, and the live window in a real compositor.
+      group: Task Manager
+      suite: windows_taskman
+    source: file://taskman_test.lua
+    modules: [fs, gfx, channel, process, tty, time]
+    imports:
+      test: wippy.test:test
+      model: windows.taskman:model
+      ui: windows.shell.sdk:ui
+      taskman_window: windows.taskman:window
+      rasters: windows.shell.theme:rasters
+      desktop: windows.tui_desktop.desktop:window_api
+    method: run
+
+  - name: taskman_shots_test
+    kind: function.lua
+    meta:
+      type: test
+      comment: "Task Manager's four tabs on sample data through the shell's renderer — test/shots/taskman-applications.png, -processes, -performance and -node."
+      group: Task Manager
+      suite: windows_taskman
+    source: file://taskman_shots_test.lua
+    method: run
+    # `gfx` and `fs` for the shots: the font arrives as bytes read from
+    # app:system_fonts, the PNGs are written to app:shots.
+    modules: [fs, gfx]
+    imports:
+      test: wippy.test:test
+      ui: windows.shell.sdk:ui
+      render: windows.shell.sdk:render
+      rasters: windows.shell.theme:rasters
+      taskman_window: windows.taskman:window
+
+  # The live case's compositor: the base's library with the shell's pixel
+  # theme, reporting the Task Manager's frames to the test.
+  - name: taskman_composer
+    kind: process.lua
+    meta:
+      comment: A live pixel compositor with observation of the Task Manager state.
+    source: file://taskman_composer.lua
+    method: main
+    modules: [process, fs, gfx]
+    imports:
+      library: windows.tui_desktop.desktop:library
+      chrome: windows.shell.theme:chrome_pixels
+
+  # ─── Host resources ───────────────────────────────────────────────────
+  - name: shots
+    kind: fs.directory
+    meta:
+      comment: Where the window's shots go.
+    base: project
+    directory: ./shots
+    auto_init: true
+
+  - name: system_fonts
+    kind: fs.directory
+    meta:
+      comment: System TrueType fonts, read-only — the font arrives in gfx as bytes, not as a path.
+    auto_init: false
+    directory: /usr/share/fonts/truetype/liberation/
+
+  - name: db
+    kind: db.sql.sqlite
+    meta:
+      comment: In-memory database — Task Manager does not use it, but the shell's migrations ask for the resource.
+    file: ":memory:"
+
+  - name: env_storage
+    kind: env.storage.file
+    meta:
+      type: envstorage
+    file_path: ./.wippy/test.env
+    auto_create: true
+
+  - name: processes
+    kind: process.host
+    lifecycle:
+      auto_start: true
+
+  # The shell's endpoint entries resolve against these at boot; no suite calls
+  # them. The port is apart from the shell harness's :19229 and the other
+  # modules' harnesses, so they can run side by side.
+  - name: gateway
+    kind: http.service
+    addr: :19245
+    lifecycle:
+      auto_start: true
+
+  - name: api
+    kind: http.router
+    meta:
+      server: gateway
+    prefix: /api
+
+  - name: user
+    kind: security.policy
+    meta:
+      comment: Permissive actor scope for the suites.
+    policy:
+      resources: '*'
+      actions: '*'
+      effect: allow
+
+  # The harness tests the module, so it depends on it; the replacement in
+  # .wippy.yaml substitutes the working copy from ../.
+  - name: taskman_harness.dep.module
+    version: "*"
+    kind: ns.dependency
+    meta:
+      comment: The module under test; its source is replaced with ../ in .wippy.yaml.
+    component: "windows/taskman"
+
+  - name: taskman_harness.dep.migration
+    version: "*"
+    kind: ns.dependency
+    meta:
+      comment: Host binding for the migrations the shell brings.
+    component: "wippy/migration"
+    parameters:
+      - name: wippy.migration:app_db
+        value: app:db
+
+  - name: taskman_harness.dep.security
+    version: "*"
+    kind: ns.dependency
+    meta:
+      comment: Platform security groups that give host-managed services their policy scope under strict mode.
+    component: "wippy/security"
+
+  - name: taskman_harness.dep.bootloader
+    version: "*"
+    kind: ns.dependency
+    meta:
+      comment: Host wiring for the standalone test harness.
+    component: "wippy/bootloader"
+    parameters:
+      - name: wippy.bootloader:application_host
+        value: app:processes
+      - name: wippy.bootloader:env_storage
+        value: app:env_storage

@@ -1,0 +1,12 @@
+{
+  "templateVersion": 1,
+  "initialized": true,
+  "identity": {
+    "organization": "windows",
+    "module": "taskman",
+    "namespace": "windows.taskman",
+    "tag": "windows-taskman",
+    "title": "Task Manager",
+    "githubOwner": "wippy-windows"
+  }
+}

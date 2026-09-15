@@ -1,0 +1,19 @@
+version: "1.0"
+# The harness boots the module under test from `..`; the shell and its base
+# come from the Hub by the versions in wippy.lock (`make setup` resolves
+# them). To test against a working copy of the shell instead, add a
+# replacement for it here — and remove it again before publishing, or the
+# module builds only on a machine that has that directory beside it:
+#   windows/shell: ../../windows-module
+workspace:
+  replacements:
+    windows/taskman: ..
+override:
+  # The base runs programs through `exec`, which does not inherit the OS
+  # environment; the harness hands it the two variables a shell needs.
+  "windows.tui_desktop:exec:default_env.HOME": "${env:HOME}"
+  "windows.tui_desktop:exec:default_env.PATH": "${env:PATH}"
+  # The shell and its base ask the application for the group given access to
+  # their endpoints; the harness's permissive scope stands in.
+  "windows.shell.security:user_security_scope:data.default": app:user
+  "windows.tui_desktop.security:user_security_scope:data.default": app:user

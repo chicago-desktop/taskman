@@ -1,0 +1,89 @@
+name: Verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-windows-taskman-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # The shell declares the `gfx` module, which only the runtime fork has
+  # (wippy-windows/runtime, branch wippy-projects); the release CLI from
+  # wippyai/runtime does not load the shell at all. So the runtime is built
+  # from that branch here, and cached by its commit. Set an exact commit or
+  # tag to bisect a runtime regression.
+  RUNTIME_REPOSITORY: wippy-windows/runtime
+  RUNTIME_REF: wippy-projects
+
+jobs:
+  # The repository's invariants need node only, no runtime: identity,
+  # dependency ranges, the embed list, the test form, no Cyrillic, no
+  # secrets, and the initializer's round trip in the pristine template.
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Repository invariants and the initializer
+        run: make check
+
+  module:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check out the runtime fork
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ env.RUNTIME_REPOSITORY }}
+          ref: ${{ env.RUNTIME_REF }}
+          path: runtime
+
+      - name: Runtime commit
+        id: runtime
+        run: echo "sha=$(git -C runtime rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore a runtime build for this commit
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: runtime/dist/wippy-linux-amd64
+          key: wippy-${{ runner.os }}-${{ steps.runtime.outputs.sha }}
+
+      - uses: actions/setup-go@v5
+        if: steps.cache.outputs.cache-hit != 'true'
+        with:
+          go-version-file: runtime/go.mod
+          cache-dependency-path: runtime/go.sum
+
+      # sqlite-vec, fts5 and the preupdate hook are cgo and need the sqlite
+      # headers; the shell's pixel theme reads Liberation Sans as bytes.
+      - name: System packages
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libsqlite3-dev fonts-liberation
+
+      - name: Build the runtime
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: make -C runtime build-wippy-local
+
+      - name: Lint and test with the local build
+        run: make setup lint test WIPPY="$PWD/runtime/dist/wippy-linux-amd64"
+
+      - name: The window as the renderer drew it
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shots
+          path: test/shots/
+          if-no-files-found: ignore

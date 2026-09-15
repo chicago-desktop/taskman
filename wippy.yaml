@@ -1,0 +1,29 @@
+organization: windows
+module: taskman
+description: Task Manager for the Windows 95 shell — open windows, runtime processes, memory and goroutines over time and the node; ends a window or a process on confirmation, for administrators.
+license: MIT
+repository: https://github.com/wippy-windows/taskman
+homepage: https://wippy.ai
+keywords:
+  - kickside
+  - tui
+  - terminal
+  - desktop
+  - windows
+# No `version:` here — the publisher picks it (`wippy publish` bumps the
+# latest published one). A published version is immutable.
+exclude_meta:
+  type:
+    - test
+exclude:
+  - "wippy.lock"
+  - "app:**"
+  - "app.env:**"
+  - "test/**"
+  - "test:**"
+  - ".wippy/**"
+  - ".wippy:**"
+# `wippy publish` packs the entries of src/ and embeds only the fs.directory
+# entries listed under `embed:`. Task Manager declares none — its picture is
+# the shell's taskmgr — so there is no `embed:` list; add one with the first
+# pack.

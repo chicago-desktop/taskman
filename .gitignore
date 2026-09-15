@@ -1,0 +1,11 @@
+.wippy/
+/wippy.lock
+/test/wippy.lock
+/test/shots/
+node_modules/
+.env
+.local/
+*.wapp
+*.log
+.DS_Store
+__pycache__/

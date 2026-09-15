@@ -5,7 +5,7 @@ version: "1.0"
 # against a working copy of the shell instead, add a replacement for it
 # here — and remove it again before publishing, or the module builds only
 # on a machine that has that directory beside it:
-#   chicago/shell: ../../windows-module
+#   chicago/shell: ../../shell
 workspace:
   replacements:
     chicago/taskman: ..

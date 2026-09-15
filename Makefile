@@ -22,7 +22,7 @@ SHELL := bash
 # Point WIPPY at the fork's binary:
 #
 #   make test WIPPY=~/src/runtime/dist/wippy-linux-amd64
-WIPPY ?= /home/butschster/repos/wippy/runtime/dist/wippy-linux-amd64
+WIPPY ?= $(CURDIR)/../runtime/dist/wippy-linux-amd64
 
 # The shell declares a terminal.host of its own, and the CLI then refuses to
 # pick one by itself; the suites run on the application's ordinary host.

@@ -16,7 +16,7 @@ if (rootConfig.initialized) {
   process.exit(0)
 }
 
-const target = await mkdtemp(resolve(tmpdir(), 'windows-module-init-'))
+const target = await mkdtemp(resolve(tmpdir(), 'chicago-module-init-'))
 
 await cp(root, target, {
   recursive: true,

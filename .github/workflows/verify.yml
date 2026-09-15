@@ -14,12 +14,14 @@ concurrency:
 
 env:
   # The shell declares the `gfx` module, which only the runtime fork has
-  # (chicago-desktop/runtime, branch wippy-projects); the release CLI from
-  # wippyai/runtime does not load the shell at all. So the runtime is built
-  # from that branch here, and cached by its commit. Set an exact commit or
-  # tag to bisect a runtime regression.
+  # (chicago-desktop/runtime); the release CLI from wippyai/runtime does not
+  # load the shell at all. The fork's release v0.3.40a-chicago.2 is the
+  # first that resolves the shell and the base from their GitHub
+  # repositories by tag, which is how src/_index.yaml declares them. So the
+  # runtime is built from that release here, and cached by its commit. Set
+  # another tag or an exact commit to bisect a runtime regression.
   RUNTIME_REPOSITORY: chicago-desktop/runtime
-  RUNTIME_REF: wippy-projects
+  RUNTIME_REF: v0.3.40a-chicago.2
 
 jobs:
   # The repository's invariants need node only, no runtime: identity,

@@ -9,8 +9,11 @@ is the shell's, and its work sequence applies here.
 What to know before the first edit:
 
 - **Only a build of the runtime fork runs this module** (chicago-desktop/runtime,
-  branch `wippy-projects`): the shell declares `gfx`, and a release `wippy`
-  refuses to load it with `node with ID {gfx :gfx} not found`. The Makefile's
+  a release `v0.3.40a-chicago.2` or newer): the shell declares `gfx`, and a
+  release `wippy` refuses to load it with `node with ID {gfx :gfx} not found`.
+  The same build resolves `chicago/shell` and `chicago/tui-desktop` from
+  their GitHub repositories by tag (`component: github.com/chicago-desktop/…`
+  in `src/_index.yaml`); an older one refuses that dependency. The Makefile's
   `WIPPY` names the build; `make lint` with a release `wippy` verifies nothing.
 - **`make test` runs the harness in `test/`** with `--host
   wippy.terminal:host`; it writes `test/shots/taskman-<tab>.png` (the four tabs),

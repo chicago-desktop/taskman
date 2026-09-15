@@ -10,10 +10,11 @@ param(
     [string]$GitHubOwner,
     [ValidateSet('private', 'public')]
     [string]$Visibility = 'public',
-    # The shell declares the `gfx` module, which only a local build of the
-    # runtime fork has (chicago-desktop/runtime, branch wippy-projects); the
-    # release `wippy` does not load the shell. Name your build here or in
-    # the WIPPY environment variable.
+    # The shell declares the `gfx` module, which only the runtime fork has
+    # (chicago-desktop/runtime, a release v0.3.40a-chicago.2 or newer — the
+    # one that resolves the shell and the base from GitHub by tag); the
+    # release `wippy` does not load the shell. Name the fork's binary here
+    # or in the WIPPY environment variable.
     [string]$Wippy = $(if ($env:WIPPY) { $env:WIPPY } else { 'wippy' }),
     [string]$Python = 'python'
 )

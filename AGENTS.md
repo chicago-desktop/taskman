@@ -8,10 +8,15 @@ in full before changing the repository.
 
 - **English only**: code, comments, `meta.comment`, YAML comments, documents,
   test names, commit messages. `make check` refuses Cyrillic anywhere.
-- **The local runtime build only.** The shell declares the `gfx` module,
-  which only a build of the runtime fork has (chicago-desktop/runtime, branch
-  `wippy-projects`); a release `wippy` does not load the shell and says only
-  `node with ID {gfx :gfx} not found`. `make lint` and `make test` use the
+- **The runtime fork's build only.** The shell declares the `gfx` module,
+  which only a build of the runtime fork has (chicago-desktop/runtime, a
+  release `v0.3.40a-chicago.2` or newer); a release `wippy` does not load
+  the shell and says only `node with ID {gfx :gfx} not found`. The same
+  build resolves `chicago/shell` and `chicago/tui-desktop` from their GitHub
+  repositories by tag — the dependencies in `src/_index.yaml` name the
+  repository (`component: github.com/chicago-desktop/shell`,
+  `version: ">=0.2.0"`), so the module builds on any machine without a
+  working copy of the shell beside it. `make lint` and `make test` use the
   build the Makefile's `WIPPY` names; a release `wippy lint` answers "clean"
   to `gfx` code because it cannot see it.
 - **Run the tests from the harness** (`make test`, that is `wippy test

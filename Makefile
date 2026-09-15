@@ -14,10 +14,12 @@ VIS  := public
 SHELL := bash
 .SHELLFLAGS := -o pipefail -ec
 
-# The shell this module runs in declares the `gfx` module, and only a local
-# build of the runtime fork has it (chicago-desktop/runtime, branch
-# wippy-projects): the release `wippy` from PATH does not load the shell at
-# all and says only "node with ID … not found". Point WIPPY at your build:
+# The shell this module runs in declares the `gfx` module, and only the
+# runtime fork has it (chicago-desktop/runtime, a build from its releases,
+# v0.3.40a-chicago.2 or newer — the one that also resolves the shell and the
+# base from their GitHub repositories by tag): the release `wippy` from PATH
+# does not load the shell at all and says only "node with ID … not found".
+# Point WIPPY at the fork's binary:
 #
 #   make test WIPPY=~/src/runtime/dist/wippy-linux-amd64
 WIPPY ?= /home/butschster/repos/wippy/runtime/dist/wippy-linux-amd64
@@ -33,9 +35,11 @@ TEST_HOST := wippy.terminal:host
 init:
 	node scripts/init-module.mjs --organization "$(ORG)" --module "$(MODULE_NAME)" --title "$(TITLE)" $(if $(NAMESPACE),--namespace "$(NAMESPACE)",) $(if $(TAG),--tag "$(TAG)",) $(if $(GITHUB_OWNER),--github-owner "$(GITHUB_OWNER)",)
 
-# Resolve the module's and the harness's dependencies from the Hub into the
-# two wippy.lock files (both ignored by git). A dependency missing from the
-# lock stops the boot outright.
+# Resolve the module's and the harness's dependencies into the two
+# wippy.lock files (both ignored by git): the shell and the base from their
+# GitHub repositories by tag (the first resolve clones them into
+# ~/.wippy/git), the runtime modules from the Hub. A dependency missing from
+# the lock stops the boot outright.
 setup:
 	$(WIPPY) update
 	cd test && $(WIPPY) update

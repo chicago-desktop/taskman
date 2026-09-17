@@ -80,6 +80,7 @@ end
 function sample.memory_tree(model: any): any
     if model.problem then return sample.refusal(model.problem) end
     local top = sample.ceiling(model.history)
+    if model.show_history == false then return gadget.stack{gadget.meter{caption = "Heap", value = model.value or 0, ceiling = top, unit = " MB"}} end
     return gadget.stack{
         gadget.meter{caption = "Heap", value = model.value or 0, ceiling = top, unit = " MB"},
         gadget.history{values = model.history, ceiling = top, unit = " MB"},
@@ -88,6 +89,7 @@ end
 
 function sample.goroutines_tree(model: any): any
     if model.problem then return sample.refusal(model.problem) end
+    if model.show_history == false then return gadget.stack{gadget.stat{value = model.value or 0, caption = "goroutines"}} end
     return gadget.stack{
         gadget.stat{value = model.value or 0, caption = "goroutines"},
         gadget.history{values = model.history, ceiling = sample.ceiling(model.history)},

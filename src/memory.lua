@@ -15,12 +15,17 @@ end
 
 function definition.init(args: any, context: any): any
     local model = sample.model()
+    if type(args) == "table" and args.show_history ~= nil and type(args.show_history) ~= "boolean" then
+        model.problem, model.invalid_config = "show_history must be a boolean", true
+        return model
+    end
+    model.show_history = type(args) ~= "table" or args.show_history ~= false
     take(model)
     return model
 end
 
 function definition.update(model: any, action: any, context: any): any
-    if action.type ~= "tick" then return false end
+    if model.invalid_config or action.type ~= "tick" then return false end
     take(model)
     return nil
 end

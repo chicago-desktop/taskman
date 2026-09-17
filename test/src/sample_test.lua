@@ -148,5 +148,20 @@ local function define_tests()
     end)
 end
 
-local run_cases = test.run_cases(define_tests)
+local original_tests = define_tests
+local function configured_tests()
+    original_tests()
+    test.describe("widget-owned history setting", function()
+        test.it("hides the graph on one model without changing another", function()
+            local a, b = sample.model(), sample.model()
+            a.show_history = false
+            a.value, b.value = 42, 42
+            test.eq(#sample.memory_tree(a).children, 1)
+            test.eq(#sample.memory_tree(b).children, 2)
+            test.eq(#sample.goroutines_tree(a).children, 1)
+            test.eq(#sample.goroutines_tree(b).children, 2)
+        end)
+    end)
+end
+local run_cases = test.run_cases(configured_tests)
 return {run = function(options) return run_cases(options) end}

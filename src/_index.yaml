@@ -175,6 +175,12 @@ entries:
     kind: process.lua
     meta:
       type: chicago.widget
+      settings:
+        fields:
+          - key: show_history
+            type: boolean
+            label: Show history graph
+            default: true
       title: Memory
       width: 20
       height: 8
@@ -194,6 +200,12 @@ entries:
     kind: process.lua
     meta:
       type: chicago.widget
+      settings:
+        fields:
+          - key: show_history
+            type: boolean
+            label: Show history graph
+            default: true
       title: Goroutines
       width: 20
       height: 9

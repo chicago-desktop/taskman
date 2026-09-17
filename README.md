@@ -129,3 +129,11 @@ https://github.com/chicago-desktop/taskman.
 ## Licence
 
 MIT.
+
+## Widget settings
+
+Memory and Goroutines each declare `show_history` in `meta.settings.fields`.
+Desktop Widgets renders the checkbox in Properties → Widget settings and
+stores its value in that instance's `config`. The default is `true`; `false`
+hides the history graph for that instance. Each process validates and reads
+its own configuration.
